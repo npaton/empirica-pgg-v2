@@ -152,6 +152,8 @@ export function AvatarDeduction({
   punishmentExists = false,
   rewardExists = false,
   disabled = false,
+  rewardDisabled = false,
+  punishmentDisabled = false,
   submitted = false,
   onAdd = () => {},
   onDeduct = () => {},
@@ -176,24 +178,28 @@ export function AvatarDeduction({
             </Label>
           </div>
         )}
-        {(rewardExists || (punishmentExists && deducted > 0)) && !disabled && (
-          <button
-            onClick={onAdd}
-            className="absolute w-6 top-0 left-full -ml-6 hover:-top-0.5 active:top-0.5 active:shadow-none"
-            title={deducted > 0 ? "Reduce punishment" : "Reward"}
-          >
-            <Add />
-          </button>
-        )}
-        {(punishmentExists || (rewardExists && added > 0)) && !disabled && (
-          <button
-            onClick={onDeduct}
-            className="absolute w-6 top-0 right-full -mr-6 text-right hover:-top-0.5 active:top-0.5 active:shadow-none"
-            title={added > 0 ? "Reduce reward" : "Punish"}
-          >
-            <Deduct />
-          </button>
-        )}
+        {(rewardExists || (punishmentExists && deducted > 0)) &&
+          !disabled &&
+          !rewardDisabled && (
+            <button
+              onClick={onAdd}
+              className="absolute w-6 top-0 left-full -ml-6 hover:-top-0.5 active:top-0.5 active:shadow-none"
+              title={deducted > 0 ? "Reduce punishment" : "Reward"}
+            >
+              <Add />
+            </button>
+          )}
+        {(punishmentExists || (rewardExists && added > 0)) &&
+          !disabled &&
+          !punishmentDisabled && (
+            <button
+              onClick={onDeduct}
+              className="absolute w-6 top-0 right-full -mr-6 text-right hover:-top-0.5 active:top-0.5 active:shadow-none"
+              title={added > 0 ? "Reduce reward" : "Punish"}
+            >
+              <Deduct />
+            </button>
+          )}
         <div className="absolute -bottom-1 left-0 w-full text-center">
           <Label color="yellow" size="md" stroke shadow>
             {contributed}

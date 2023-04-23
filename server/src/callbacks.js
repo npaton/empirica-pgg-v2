@@ -1,8 +1,6 @@
 import { ClassicListenersCollector } from "@empirica/core/admin/classic";
-export const Empirica = new ClassicListenersCollector();
-import reject from 'lodash/reject';
-import times from 'lodash/times';
 import { dev } from "../../dev.js";
+export const Empirica = new ClassicListenersCollector();
 
 export const AnimalList = [
   "sloth",
@@ -37,19 +35,22 @@ export const AnimalList = [
   "panda",
 ];
 
+const times = (n, func = (i) => i) =>
+  Array.from({ length: n }).map((_, i) => func(i));
+
 Empirica.onGameStart(({ game }) => {
   game.set("justStarted", true);
   game.set("gameStartTimestamp", Date.now());
 
   game.players.forEach((player, i) => {
+    player.set("index", i);
     player.set("avatar", AnimalList[i]);
-    player.set("avatarId", i);
     player.set("cumulativePayoff", game.get("treatment").endowment);
   });
 
   const round = game.addRound({
     name: "Instructions",
-    task: "instructions"
+    task: "instructions",
   });
 
   round.addStage({ name: "First", duration: 300 });
@@ -59,7 +60,7 @@ Empirica.onGameStart(({ game }) => {
   times(game.get("treatment").numRounds, (i) => {
     const round1 = game.addRound();
 
-    round1.set("currentRound", i)
+    round1.set("index", i);
 
     round1.addStage({
       name: "contribution",
@@ -89,14 +90,18 @@ Empirica.onRoundStart(({ round }) => {
   round.set("totalReturns", 0);
   round.set("payoff", 0);
 
-  const contributionProp = round.currentGame.get("treatment").defaultContribProp;
+  const contributionProp =
+    round.currentGame.get("treatment").defaultContribProp;
 
   round.currentGame.players.forEach((player, i) => {
     player.round.set("punishedBy", {});
     player.round.set("punished", {});
     player.round.set("rewardedBy", {});
     player.round.set("rewarded", {});
-    player.round.set("contribution", parseInt(round.currentGame.get("treatment").endowment * contributionProp));
+    player.round.set(
+      "contribution",
+      parseInt(round.currentGame.get("treatment").endowment * contributionProp)
+    );
   });
 });
 
@@ -148,14 +153,13 @@ function computePayoff(game) {
     game.get("totalContributions") * multiplier
   );
 
-
   game.set("totalReturns", multipliedReturns);
 
   const totalReturns = game.get("totalReturns");
   const payoff = Math.round(totalReturns / game.players.length);
 
   game.set("payoff", payoff);
-};
+}
 
 function computePunishmentCosts(game) {
   game.players.forEach((player) => {
@@ -171,7 +175,7 @@ function computePunishmentCosts(game) {
     }
     let punishedBy = {};
     player.round.set("costs", cost);
-    const otherPlayers = reject(game.players, (p) => p.id === player.id);
+    const otherPlayers = game.players.filter((p) => p.id !== player.id);
     otherPlayers.forEach((otherPlayer) => {
       const otherPlayerPunished = otherPlayer.round.get("punished");
       if (Object.keys(otherPlayerPunished).includes(player.id)) {
@@ -190,16 +194,17 @@ function computePunishmentCosts(game) {
       }
     }
     const penalties =
-      parseFloat(receivedPunishments) * game.get("treatment").punishmentMagnitude;
+      parseFloat(receivedPunishments) *
+      game.get("treatment").punishmentMagnitude;
     player.round.set("penalties", penalties);
   });
-};
+}
 
 function computeRewards(game) {
   game.players.forEach((player) => {
     const rewarded = player.round.get("rewarded");
     const rewardedKeys = Object.keys(rewarded);
-    
+
     let cost = 0;
     for (const key of rewardedKeys) {
       if (rewarded[key] != "0") {
@@ -213,7 +218,7 @@ function computeRewards(game) {
 
     player.round.set("costs", parseFloat(player.round.get("costs")) + cost);
 
-    const otherPlayers = reject(game.players, (p) => p.id === player.id);
+    const otherPlayers = game.players.filter((p) => p.id !== player.id);
     otherPlayers.forEach((otherPlayer) => {
       const otherPlayerRewarded = otherPlayer.round.get("rewarded");
       if (Object.keys(otherPlayerRewarded).includes(player.id)) {
@@ -224,7 +229,7 @@ function computeRewards(game) {
 
     player.round.set("rewardedBy", rewardedBy);
     rewardedBy = player.round.get("rewardedBy");
-    
+
     let receivedRewards = 0;
     const rewardedByKeys = Object.keys(rewardedBy);
     for (const key of rewardedByKeys) {
@@ -237,7 +242,7 @@ function computeRewards(game) {
       parseFloat(receivedRewards) * game.get("treatment").rewardMagnitude;
     player.round.set("rewards", rewards);
   });
-};
+}
 
 function computeIndividualPayoff(game) {
   game.players.forEach((player) => {
@@ -257,7 +262,7 @@ function computeIndividualPayoff(game) {
       parseFloat(costs);
     player.round.set("roundPayoff", roundPayoff);
   });
-};
+}
 
 function computeTotalPayoff(game) {
   let totalPayoff = 0;

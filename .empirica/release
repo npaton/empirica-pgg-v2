@@ -1,6 +1,5 @@
-version: v1.0.0
-sha: d768c7c
-build: "173"
-tag: v1.0.0
+version: v1.3.0
+sha: d6ab2bf
+tag: v1.3.0
 branch: main
-time: "2023-01-01T12:53:01Z"
+time: "2023-04-22T02:49:15Z"
