@@ -1,0 +1,358 @@
+factors:
+- name: playerCount
+  desc: add description here
+  values:
+  - name: playerCount
+    value: 2
+  - name: playerCount
+    value: 6
+  - name: playerCount
+    value: 10
+- name: numRounds
+  desc: add description here
+  values:
+  - name: numRounds
+    value: 20
+  - name: numRounds
+    value: 50
+  - name: numRounds
+    value: 10
+  - name: numRounds
+    value: 30
+- name: showNRounds
+  desc: add description here
+  values:
+  - name: showNRounds
+    value: true
+  - name: showNRounds
+    value: false
+- name: endowment
+  desc: add description here
+  values:
+  - name: endowment
+    value: 20
+- name: multiplier
+  desc: add description here
+  values:
+  - name: multiplier
+    value: 1
+  - name: multiplier
+    value: 2
+  - name: multiplier
+    value: 3
+  - name: multiplier
+    value: 5.2
+- name: punishmentCost
+  desc: add description here
+  values:
+  - name: punishmentCost
+    value: 2
+  - name: punishmentCost
+    value: 4
+  - name: punishmentCost
+    value: 1
+  - name: punishmentCost
+    value: 3
+- name: punishmentMagnitude
+  desc: add description here
+  values:
+  - name: punishmentMagnitude
+    value: 6
+  - name: punishmentMagnitude
+    value: 2
+  - name: punishmentMagnitude
+    value: 11
+- name: basePay
+  desc: add description here
+  values:
+  - name: basePay
+    value: 3
+- name: conversionRate
+  desc: add description here
+  values:
+  - name: conversionRate
+    value: 300
+- name: contributionDuration
+  desc: add description here
+  values:
+  - name: contributionDuration
+    value: 45
+- name: outcomeDuration
+  desc: add description here
+  values:
+  - name: outcomeDuration
+    value: 45
+- name: summaryDuration
+  desc: add description here
+  values:
+  - name: summaryDuration
+    value: 45
+- name: showOtherSummaries
+  desc: add description here
+  values:
+  - name: showOtherSummaries
+    value: true
+  - name: showOtherSummaries
+    value: false
+- name: showPunishmentId
+  desc: add description here
+  values:
+  - name: showPunishmentId
+    value: false
+  - name: showPunishmentId
+    value: true
+- name: punishmentExists
+  desc: add description here
+  values:
+  - name: punishmentExists
+    value: true
+  - name: punishmentExists
+    value: false
+- name: punishmentFrequency
+  desc: add description here
+  values:
+  - name: punishmentFrequency
+    value: 0
+  - name: punishmentFrequency
+    value: 1
+- name: rewardFrequency
+  desc: add description here
+  values:
+  - name: rewardFrequency
+    value: 0
+  - name: rewardFrequency
+    value: 1
+- name: networkInfoDisabled
+  desc: add description here
+  values:
+  - name: networkInfoDisabled
+    value: true
+  - name: networkInfoDisabled
+    value: false
+- name: networkRewardDisabled
+  desc: add description here
+  values:
+  - name: networkRewardDisabled
+    value: true
+  - name: networkRewardDisabled
+    valie: false
+- name: networkPunishmentDisabled
+  desc: add description here
+  values:
+  - name: networkPunishmentDisabled
+    value: true
+  - name: networkPunishmentDisabled
+    value: false
+- name: networkMatrix
+  desc: add description here
+  values:
+  - name: networkMatrix
+    value: []
+treatments:
+- name: pilot2_wave2_t0
+  factors:
+    basePay: 3
+    contributionDuration: 45
+    conversionRate: 300
+    endowment: 20
+    multiplier: 1
+    numRounds: 20
+    outcomeDuration: 45
+    playerCount: 2
+    punishmentCost: 2
+    punishmentExists: true
+    punishmentMagnitude: 6
+    showNRounds: true
+    showOtherSummaries: true
+    showPunishmentId: false
+    summaryDuration: 45
+    punishmentFrequency: 1
+    rewardFrequency: 1
+    networkInfoDisabled: false
+    networkRewardDisabled: false
+    networkPunishmentDisabled: false
+    networkMatrix: []
+- name: pilot2_wave2_t1
+  factors:
+    basePay: 3
+    contributionDuration: 45
+    conversionRate: 300
+    endowment: 20
+    multiplier: 2
+    numRounds: 50
+    outcomeDuration: 45
+    playerCount: 6
+    punishmentCost: 4
+    punishmentExists: true
+    punishmentMagnitude: 6
+    showNRounds: false
+    showOtherSummaries: false
+    showPunishmentId: true
+    summaryDuration: 45
+    punishmentFrequency: 1
+    rewardFrequency: 1
+    networkInfoDisabled: false
+    networkRewardDisabled: false
+    networkPunishmentDisabled: false
+    networkMatrix: []
+- name: pilot2_wave2_t2
+  factors:
+    basePay: 3
+    contributionDuration: 45
+    conversionRate: 300
+    endowment: 20
+    multiplier: 3
+    numRounds: 10
+    outcomeDuration: 45
+    playerCount: 10
+    punishmentCost: 1
+    punishmentExists: true
+    punishmentMagnitude: 2
+    showNRounds: false
+    showOtherSummaries: true
+    showPunishmentId: true
+    summaryDuration: 45
+    punishmentFrequency: 1
+    rewardFrequency: 1
+    networkInfoDisabled: false
+    networkRewardDisabled: false
+    networkPunishmentDisabled: false
+    networkMatrix: []
+- name: pilot2_wave2_t3
+  factors:
+    basePay: 3
+    contributionDuration: 45
+    conversionRate: 300
+    endowment: 20
+    multiplier: 5.2
+    numRounds: 30
+    outcomeDuration: 45
+    playerCount: 6
+    punishmentCost: 3
+    punishmentExists: true
+    punishmentMagnitude: 11
+    showNRounds: true
+    showOtherSummaries: false
+    showPunishmentId: false
+    summaryDuration: 45
+    punishmentFrequency: 1
+    rewardFrequency: 1
+    networkInfoDisabled: false
+    networkRewardDisabled: false
+    networkPunishmentDisabled: false
+    networkMatrix: []
+- name: pilot2_wave2_t4
+  factors:
+    basePay: 3
+    contributionDuration: 45
+    conversionRate: 300
+    endowment: 20
+    multiplier: 1
+    numRounds: 20
+    outcomeDuration: 45
+    playerCount: 2
+    punishmentCost: 2
+    punishmentExists: false
+    punishmentMagnitude: 6
+    showNRounds: true
+    showOtherSummaries: true
+    showPunishmentId: false
+    summaryDuration: 45
+    punishmentFrequency: 1
+    rewardFrequency: 1
+    networkInfoDisabled: false
+    networkRewardDisabled: false
+    networkPunishmentDisabled: false
+    networkMatrix: []
+- name: pilot2_wave2_t5
+  factors:
+    basePay: 3
+    contributionDuration: 45
+    conversionRate: 300
+    endowment: 20
+    multiplier: 2
+    numRounds: 50
+    outcomeDuration: 45
+    playerCount: 6
+    punishmentCost: 4
+    punishmentExists: false
+    punishmentMagnitude: 6
+    showNRounds: false
+    showOtherSummaries: false
+    showPunishmentId: true
+    summaryDuration: 45
+    punishmentFrequency: 1
+    rewardFrequency: 1
+    networkInfoDisabled: false
+    networkRewardDisabled: false
+    networkPunishmentDisabled: false
+    networkMatrix: []
+- name: pilot2_wave2_t6
+  factors:
+    basePay: 3
+    contributionDuration: 45
+    conversionRate: 300
+    endowment: 20
+    multiplier: 3
+    numRounds: 10
+    outcomeDuration: 45
+    playerCount: 10
+    punishmentCost: 1
+    punishmentExists: false
+    punishmentMagnitude: 2
+    showNRounds: false
+    showOtherSummaries: true
+    showPunishmentId: true
+    summaryDuration: 45
+    punishmentFrequency: 1
+    rewardFrequency: 1
+    networkInfoDisabled: false
+    networkRewardDisabled: false
+    networkPunishmentDisabled: false
+    networkMatrix: []
+- name: pilot2_wave2_t7
+  factors:
+    basePay: 3
+    contributionDuration: 45
+    conversionRate: 300
+    endowment: 20
+    multiplier: 5.2
+    numRounds: 30
+    outcomeDuration: 45
+    playerCount: 6
+    punishmentCost: 3
+    punishmentExists: false
+    punishmentMagnitude: 11
+    showNRounds: true
+    showOtherSummaries: false
+    showPunishmentId: false
+    summaryDuration: 45
+    punishmentFrequency: 1
+    rewardFrequency: 1
+    networkInfoDisabled: false
+    networkRewardDisabled: false
+    networkPunishmentDisabled: false
+    networkMatrix: []
+- name: pilot2_wave2_t8
+  factors:
+    basePay: 3
+    contributionDuration: 45
+    conversionRate: 300
+    endowment: 20
+    multiplier: 1
+    numRounds: 30
+    outcomeDuration: 45
+    playerCount: 3
+    punishmentCost: 3
+    punishmentExists: true
+    punishmentMagnitude: 11
+    showNRounds: true
+    showOtherSummaries: false
+    showPunishmentId: false
+    summaryDuration: 45
+    punishmentFrequency: 1
+    rewardFrequency: 1
+    networkInfoDisabled: false
+    networkRewardDisabled: false
+    networkPunishmentDisabled: false
+    networkMatrix: [[0,1,0], [1,0,1], [0,1,0]]
