@@ -2,7 +2,7 @@ import React from "react";
 import { Avatar } from "./AnimalAvatar";
 
 export class Chat extends React.Component {
-  state = { open: false, focused: false };
+  state = { open: false, focused: false, text: "" };
 
   constructor(props) {
     super(props);
@@ -45,74 +45,52 @@ export class Chat extends React.Component {
     }, 1000);
   };
 
-  renderOpen() {
-    const { messages, avatar, onNewMessage } = this.props;
+  render() {
+    const { messages, avatar } = this.props;
+    const { text } = this.state;
+    const isOpen = this.state.open || this.state.focused;
 
     return (
       <div
-        className="absolute w-full h-full px-2 py-2 pointer-events-auto flex flex-col justify-end "
-        // onMouseEnter={this.handleMouseEnterOpen}
-        // onMouseLeave={this.handleMouseLeaveOpen}
+        className={
+          isOpen
+            ? "absolute w-full h-full px-2 py-2 pointer-events-auto flex flex-col justify-end"
+            : "absolute bottom-0 w-full font-mono pointer-events-auto"
+        }
       >
-        <div className="rounded-2xl outline outline-2 outline-gray-300 pb-2 max-h-[75%] flex flex-col font-mono bg-white/95">
-          <div className="overflow-auto px-2 pb-2" ref={this.messagesRef}>
-            <Messages messages={messages} showNoMessages />
-          </div>
-          <div className="px-2">
-            <Input
-              // autoFocus={false}
-              autoFocus={true}
-              avatar={avatar}
-              onNewMessage={onNewMessage}
-              onFocus={() => {
-                this.setState({ focused: true });
-              }}
-              onBlur={() => {
-                this.setState({ focused: false });
-              }}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  handleMouseEnterClosed = () => {
-    this.setState({ open: true });
-  };
-
-  handleMouseLeaveClosed = () => {
-    this.closeTimeout = setTimeout(() => {
-      this.setState({ open: false });
-    }, 2000);
-  };
-
-  renderClosed() {
-    const { messages, avatar, onNewMessage } = this.props;
-
-    return (
-      <div
-        className="absolute bottom-0 w-full font-mono pointer-events-auto"
-        // onMouseEnter={this.handleMouseEnterClosed}
-        // onMouseLeave={this.handleMouseLeaveClosed}
-      >
-        <div className="pb-4 pl-4 w-full font-mono">
-          {messages.length > 3 && (
+        <div
+          className={
+            isOpen
+              ? "rounded-2xl outline outline-2 outline-gray-300 pb-2 max-h-[75%] flex flex-col font-mono bg-white/95"
+              : "pb-4 pl-4 w-full font-mono"
+          }
+        >
+          {!isOpen && messages.length > 3 && (
             <button
-              // onClick={() => this.setState({ open: true })}
               onClick={() => this.setState({ focused: true })}
               className="text-gray-400 pl-2"
             >
               See full conversation
             </button>
           )}
-          <div className="pb-2">
-            <Messages maxSize={100} messages={messages.slice(-3)} />
+
+          <div
+            className={isOpen ? "overflow-auto px-2 pb-2" : "pb-2"}
+            ref={this.messagesRef}
+          >
+            <Messages
+              maxSize={isOpen ? 0 : 100}
+              messages={isOpen ? messages : messages.slice(-3)}
+              showNoMessages={isOpen}
+            />
           </div>
-          <div className="pr-4">
+          <div className={isOpen ? "px-2" : "pr-4"}>
             <Input
+              autoFocus={isOpen}
               avatar={avatar}
-              onNewMessage={onNewMessage}
+              onNewMessage={this.onNewMessage}
+              text={text}
+              onChange={(text) => this.setState({ text })}
               onFocus={() => {
                 this.setState({ focused: true });
               }}
@@ -125,14 +103,6 @@ export class Chat extends React.Component {
         </div>
       </div>
     );
-  }
-
-  render() {
-    if (this.state.open || this.state.focused) {
-      return this.renderOpen();
-    } else {
-      return this.renderClosed();
-    }
   }
 }
 
@@ -179,21 +149,9 @@ function Messages({ messages, maxSize = 0, showNoMessages = false }) {
 }
 
 class Input extends React.Component {
-  state = { text: "" };
-
   handleSubmit = (e) => {
     e.preventDefault();
-
-    if (this.state.text.length > 1024) {
-      e.preventDefault();
-
-      alert("Max message length is 1024");
-
-      return;
-    }
-
-    this.props.onNewMessage(this.state.text);
-    this.setState({ text: "" });
+    this.props.onNewMessage();
   };
 
   handleKeyDown = (e) => {
@@ -213,14 +171,14 @@ class Input extends React.Component {
   }
 
   render() {
-    const { avatar, onFocus, onBlur, autoFocus } = this.props;
+    const { avatar, onFocus, onBlur, autoFocus, text, onChange } = this.props;
 
     return (
       <form
         onSubmit={this.handleSubmit}
-        className="w-full font-semibold flex flex-row items-start rounded-xl pl-2 pr-1 py-1 ring-2 bg-gray-50 ring-gray-200 focus-within:ring-gray-400 space-x-2"
+        className="w-full font-semibold flex flex-row items-center rounded-xl pl-2 pr-1 py-1 ring-2 bg-gray-50 ring-gray-200 focus-within:ring-gray-400 space-x-2"
       >
-        <div className="w-6 h-6 py-0.5 shrink-0">
+        <div className="w-6 h-6 shrink-0">
           <Avatar animal={avatar} />
         </div>
 
@@ -233,9 +191,9 @@ class Input extends React.Component {
           className="peer resize-none w-full py-1 pl-2 pr-0 ring-none border-none leading-snug bg-transparent placeholder:text-gray-300 text-md focus:ring-0 text-gray-600"
           rows={1}
           placeholder="Say something..."
-          value={this.state.text}
+          value={text}
           onChange={(e) => {
-            this.setState({ text: e.currentTarget.value });
+            onChange(e.currentTarget.value);
           }}
         />
 

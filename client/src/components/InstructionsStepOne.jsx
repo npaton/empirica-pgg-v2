@@ -1,9 +1,9 @@
 import React from "react";
-import { AnimalList } from "../assets/AnimalsAvatar";
-import { Button } from "./NormalButton";
 import { pickRandom } from "../../utils";
+import { AnimalList } from "../assets/AnimalsAvatar";
 import { Input } from "./Input";
 import { MockContribution } from "./MockContribution";
+import { Button } from "./NormalButton";
 
 export class InstructionsStepOne extends React.Component {
   state = { current: 0, messages: [] };
@@ -11,7 +11,8 @@ export class InstructionsStepOne extends React.Component {
   constructor(props) {
     super(props);
 
-    const { playerCount, defaultContribProp, endowment} = props.treatment;
+    const { playerCount, defaultContribProp, endowment, allOrNothing } =
+      props.treatment;
     const playerAvatar = props.player.avatar;
     const exclude = [playerAvatar];
 
@@ -47,11 +48,33 @@ export class InstructionsStepOne extends React.Component {
         component: "center",
         content: (
           <div className="prose">
-            <p>
-              In the contribution stage, use the arrow buttons to decide how
-              many of the coins you are given in each round you want to
-              contribute to the public fund (the bowl); the default contribution is {parseInt(defaultContribProp*endowment)} coins. Try using the buttons to change your contribution.
-            </p>
+            {allOrNothing ? (
+              <p>
+                In the contribution stage, use the arrow buttons to decide
+                whether to contribute all of the {endowment} coins given to you
+                in a round, or withhold them all; intermediate amounts are not
+                possible. By default, you will contribute{" "}
+                {defaultContribProp == 1 ? "all of" : "none of"} your coins.{" "}
+                <strong>
+                  Try using the arrow buttons to change your contribution, and
+                  move coins between your pocket (below) and the shared pot
+                  (above).
+                </strong>
+              </p>
+            ) : (
+              <p>
+                In the contribution stage, use the arrow buttons to decide how
+                many of the {endowment} coins you are given in each round you
+                want to contribute to the public fund (the bowl); the default
+                contribution is {parseInt(defaultContribProp * endowment)}{" "}
+                coins.{" "}
+                <strong>
+                  Try using the arrow buttons to change your contribution, and
+                  move coins between your pocket (below) and the shared pot
+                  (above).
+                </strong>
+              </p>
+            )}
             <p>
               When you have decided how many coins to contribute, be sure to
               submit your decision by clicking the "I'm done" button. Go ahead
@@ -330,8 +353,8 @@ function Intro({ next, treatment }) {
           participation in the game, in addition to $1 per{" "}
           {treatment.conversionRate} coins earned. To receive the bonus payment,
           please be sure to stay for all rounds of the game; the exit survey
-          marks the end of the game and contains the code for submission. If you
-          are detected to be idle, you forfeit the bonus amount.
+          marks the end of the game. If you are detected to be idle, you forfeit
+          the bonus amount.
         </strong>
       </p>
 

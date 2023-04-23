@@ -17,7 +17,7 @@ export function ExitSurvey({ next }) {
   const [education, setEducation] = useState("");
 
   function handleSubmit(event) {
-    event.preventDefault()
+    event.preventDefault();
     player.set("exitSurvey", {
       age,
       gender,
@@ -36,10 +36,10 @@ export function ExitSurvey({ next }) {
   return (
     <div className="py-8 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       <Alert title="Bonus">
-        <p>
+        {/* <p>
           Please submit the following code to receive your bonus:{" "}
           <strong>{player.id}</strong>.
-        </p>
+        </p> */}
         <p className="pt-1">
           Your final <strong>bonus</strong> is in addition of the{" "}
           <strong>1 base reward</strong> for completing the HIT.

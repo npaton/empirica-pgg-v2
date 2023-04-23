@@ -1,6 +1,7 @@
 import { ClassicListenersCollector } from "@empirica/core/admin/classic";
 import { dev } from "../../dev.js";
 export const Empirica = new ClassicListenersCollector();
+import { numStagesRemoveOffline } from "../../constants.js";
 
 export const AnimalList = [
   "sloth",
@@ -46,6 +47,7 @@ Empirica.onGameStart(({ game }) => {
     player.set("index", i);
     player.set("avatar", AnimalList[i]);
     player.set("cumulativePayoff", game.get("treatment").endowment);
+    player.set("lastInteraction", game.get("gameStartTimestamp"));
   });
 
   const round = game.addRound({
@@ -57,6 +59,7 @@ Empirica.onGameStart(({ game }) => {
   round.addStage({ name: "Second", duration: 300 });
   round.addStage({ name: "Third", duration: 300 });
 
+  let stageIndex = 0;
   times(game.get("treatment").numRounds, (i) => {
     const round1 = game.addRound();
 
@@ -66,6 +69,7 @@ Empirica.onGameStart(({ game }) => {
       name: "contribution",
       displayName: "Contribution",
       duration: dev ? 300000 : game.get("treatment").contributionDuration,
+      index: stageIndex++,
     });
 
     round1.addStage({
@@ -74,12 +78,14 @@ Empirica.onGameStart(({ game }) => {
         ? "Outcome & Deductions"
         : "Outcome",
       duration: dev ? 300000 : game.get("treatment").outcomeDuration,
+      index: stageIndex++,
     });
 
     round1.addStage({
       name: "summary",
       displayName: "Summary",
       duration: dev ? 300000 : game.get("treatment").summaryDuration,
+      index: stageIndex++,
     });
   });
 });
@@ -107,6 +113,31 @@ Empirica.onRoundStart(({ round }) => {
 
 Empirica.onStageStart(({ stage }) => {
   stage.set("stageStartTimestamp", Date.now());
+
+  const remaining = game.players.filter((p) => !p.get("exited"));
+  if (remaining.length == 1) {
+    remaining[0].exit("otherPlayersLeft");
+  }
+
+  if (stage.index === 0) {
+    return;
+  }
+
+  const { contributionDuration } = game.get("treatment");
+  const maxDuration = contributionDuration * numStagesRemoveOffline * 1000;
+  const now = Date.now();
+  for (const player of remaining) {
+    if (now - player.get("lastTick") > maxDuration) {
+      // player.log("offlineExit", {
+      //   verb: "offlineExit",
+      //   playerId: player._id,
+      //   timestamp: Date.now(),
+      // });
+      player.set("exited", true);
+      player.exit("offlineTimedOut");
+      console.log(`Player ${player._id} removed for being offline.`);
+    }
+  }
 });
 
 Empirica.onStageEnded(({ stage }) => {

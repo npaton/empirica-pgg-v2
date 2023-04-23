@@ -23,7 +23,7 @@ export function AddCoins({
   submitted = false,
 }) {
   const headerComp = !submitted && (
-    <div className="pt-8">
+    <div className="pt-8" key="header">
       <Label color="orange" size="md" snug>
         {header}
       </Label>
@@ -32,6 +32,7 @@ export function AddCoins({
 
   const purseComp = !submitted && (
     <AddCoinsPurse
+      key="purse"
       amount={purse - contributed}
       footer={addLabels ? "Your pocket" : ""}
     />
@@ -41,6 +42,7 @@ export function AddCoins({
     !submitted &&
     (allOrNothing ? (
       <AddCoinsAllOrNothingArrows
+        key="arrows"
         amount={allOrNothingAmount}
         canAdd={purse - contributed > 0}
         canRemove={contributed > 0}
@@ -50,6 +52,7 @@ export function AddCoins({
       />
     ) : remainderMode ? (
       <AddCoinsArrows
+        key="arrows"
         goDown={goDown}
         useArrows={useArrows}
         canAdd1={purse - contributed > 0}
@@ -72,6 +75,7 @@ export function AddCoins({
       />
     ) : (
       <AddCoinsArrows
+        key="arrows"
         goDown={goDown}
         useArrows={useArrows}
         canAdd1={purse - contributed > 0}
@@ -83,7 +87,7 @@ export function AddCoins({
     ));
 
   const bowl = (
-    <div className="xl:w-44 2xl:w-52 pt-8">
+    <div key="bowl" className="xl:w-44 2xl:w-52 pt-8">
       <Bowl
         money={contributed}
         multiplier={multiplier}
@@ -93,13 +97,13 @@ export function AddCoins({
   );
 
   const button = !submitted && (
-    <div className="mt-8 w-full">
+    <div key="button" className="mt-8 w-full">
       <Button onClick={onSubmit}>I'm done</Button>
     </div>
   );
 
   const submittedComp = submitted && (
-    <div className="pt-8">
+    <div key="submitted" className="pt-8">
       <Label color="gray" size="md" snug>
         {submittedText}
       </Label>
@@ -107,7 +111,7 @@ export function AddCoins({
   );
 
   const footerComp = !submitted && (
-    <div className="pt-8">
+    <div key="footer" className="pt-8">
       <Label color="orange" size="md" snug>
         {footer}
       </Label>
@@ -183,6 +187,7 @@ export function AddCoinsArrows({
 }) {
   return (
     <div className="h-24 2xl:h-48 flex items-center space-x-4">
+      <p>Contribute less</p>
       <AddButton
         amount={displayRemoveMultipleAmount}
         disabled={!canRemoveMultiple}
@@ -222,6 +227,7 @@ export function AddCoinsArrows({
         dark
         useArrows={useArrows}
       />
+      <p>Contribute more</p>
     </div>
   );
 }
@@ -236,6 +242,7 @@ export function AddCoinsAllOrNothingArrows({
 }) {
   return (
     <div className="h-24 2xl:h-48 flex items-center space-x-4">
+      <p>Contribute less</p>
       <AddButton
         amount={amount}
         disabled={!canRemove}
@@ -263,6 +270,7 @@ export function AddCoinsAllOrNothingArrows({
         freeWidth
         useArrows={useArrows}
       />
+      <p>Contribute more</p>
     </div>
   );
 }
